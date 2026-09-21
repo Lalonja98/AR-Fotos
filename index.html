@@ -28,12 +28,29 @@
       text-shadow: 0 2px 4px black;
       pointer-events: none;
     }
+
+    #sonido {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      padding: 12px 22px;
+      border: none;
+      border-radius: 25px;
+      background: white;
+      color: black;
+      font-size: 16px;
+      display: none;
+    }
   </style>
 </head>
 
 <body>
 
   <div id="mensaje">Apunta la cámara a la foto 📷</div>
+
+  <button id="sonido">🔊 Activar sonido</button>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
@@ -48,22 +65,25 @@
         src="./Sayra.mp4"
         preload="auto"
         loop
-        muted
         playsinline
         crossorigin="anonymous">
       </video>
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false">
+    </a-camera>
 
     <a-entity mindar-image-target="targetIndex: 0">
 
+      <!-- Video con proporción vertical 2:3 -->
       <a-video
         src="#miVideo"
         position="0 0 0"
         rotation="0 0 0"
         width="1"
-        height="0.5625">
+        height="1.5">
       </a-video>
 
     </a-entity>
@@ -73,18 +93,43 @@
   <script>
     const video = document.querySelector("#miVideo");
     const mensaje = document.querySelector("#mensaje");
+    const botonSonido = document.querySelector("#sonido");
 
-    document.querySelector("a-entity[mindar-image-target]")
-      .addEventListener("targetFound", () => {
-        mensaje.textContent = "¡Foto detectada! 🎬";
-        video.play().catch(() => {});
-      });
+    const objetivo = document.querySelector(
+      "a-entity[mindar-image-target]"
+    );
 
-    document.querySelector("a-entity[mindar-image-target]")
-      .addEventListener("targetLost", () => {
-        mensaje.textContent = "Apunta la cámara a la foto 📷";
-        video.pause();
-      });
+    objetivo.addEventListener("targetFound", () => {
+
+      mensaje.textContent = "¡Foto detectada! 🎬";
+
+      // Primero reproduce el video sin sonido
+      // para evitar que el navegador lo bloquee.
+      video.muted = true;
+
+      video.play().catch(() => {});
+
+      // Mostramos el botón para activar el audio.
+      botonSonido.style.display = "block";
+    });
+
+    objetivo.addEventListener("targetLost", () => {
+
+      mensaje.textContent = "Apunta la cámara a la foto 📷";
+
+      video.pause();
+
+      botonSonido.style.display = "none";
+    });
+
+    botonSonido.addEventListener("click", () => {
+
+      video.muted = false;
+
+      video.play().catch(() => {});
+
+      botonSonido.textContent = "🔊 Sonido activado";
+    });
   </script>
 
 </body>
