@@ -13,28 +13,28 @@
       overflow: hidden;
     }
 
-    #info {
+    #soundButton {
       position: fixed;
-      top: 20px;
-      left: 20px;
-      right: 20px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 9999;
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 18px;
-      border-radius: 12px;
-      font-family: Arial, sans-serif;
-      font-size: 20px;
-      text-align: center;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 30px;
+      background: white;
+      color: black;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: none;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="info">
-    Apunta a una de las fotos...
-  </div>
+  <button id="soundButton">🔊 Activar sonido</button>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
@@ -43,36 +43,196 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-assets>
 
-    <a-entity mindar-image-target="targetIndex: 0"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 1"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 2"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 3"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 4"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 5"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 6"></a-entity>
-    <a-entity mindar-image-target="targetIndex: 7"></a-entity>
+      <video id="videoSayra"
+        src="./Sayra.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoTio"
+        src="./Tío.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoTio2"
+        src="./Tio2.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoTia"
+        src="./Tia.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoAmiga"
+        src="./Amiga.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoLupe"
+        src="./Lupe.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoPrimo"
+        src="./Primo.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+      <video id="videoPelon"
+        src="./Pelon.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous"></video>
+
+    </a-assets>
+
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false">
+    </a-camera>
+
+    <!-- 0 = Sayra -->
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-video
+        src="#videoSayra"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 1 = Tío -->
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-video
+        src="#videoTio"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 2 = Tio2 -->
+    <a-entity mindar-image-target="targetIndex: 2">
+      <a-video
+        src="#videoTio2"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 3 = Tia -->
+    <a-entity mindar-image-target="targetIndex: 3">
+      <a-video
+        src="#videoTia"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 4 = Amiga -->
+    <a-entity mindar-image-target="targetIndex: 4">
+      <a-video
+        src="#videoAmiga"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 5 = Lupe -->
+    <a-entity mindar-image-target="targetIndex: 5">
+      <a-video
+        src="#videoLupe"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 6 = Primo -->
+    <a-entity mindar-image-target="targetIndex: 6">
+      <a-video
+        src="#videoPrimo"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
+
+    <!-- 7 = Pelon -->
+    <a-entity mindar-image-target="targetIndex: 7">
+      <a-video
+        src="#videoPelon"
+        width="1"
+        height="1.5"
+        position="0 0 0">
+      </a-video>
+    </a-entity>
 
   </a-scene>
 
   <script>
-    const info = document.getElementById("info");
+    const soundButton = document.getElementById("soundButton");
+    let activeVideo = null;
 
-    document.querySelectorAll("[mindar-image-target]").forEach((target, index) => {
+    const targets = document.querySelectorAll("[mindar-image-target]");
+
+    targets.forEach((target) => {
 
       target.addEventListener("targetFound", () => {
 
-        info.innerHTML =
-          "📸 FOTO DETECTADA<br><br>" +
-          "TARGET INDEX: <strong>" + index + "</strong>";
+        const videoElement = target.querySelector("a-video");
+        const videoId = videoElement.getAttribute("src");
+        const video = document.querySelector(videoId);
 
-        console.log("TARGET INDEX:", index);
+        activeVideo = video;
+
+        video.muted = true;
+        video.currentTime = 0;
+
+        video.play().catch(() => {});
+
+        soundButton.style.display = "block";
       });
 
       target.addEventListener("targetLost", () => {
-        info.innerHTML = "Apunta a otra foto...";
+
+        if (activeVideo) {
+          activeVideo.pause();
+        }
+
+        activeVideo = null;
+        soundButton.style.display = "none";
       });
+
+    });
+
+    soundButton.addEventListener("click", () => {
+
+      if (activeVideo) {
+        activeVideo.muted = false;
+        activeVideo.play().catch(() => {});
+        soundButton.style.display = "none";
+      }
 
     });
   </script>
