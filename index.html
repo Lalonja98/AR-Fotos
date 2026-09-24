@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>AR Fotos</title>
 
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -15,42 +13,28 @@
       overflow: hidden;
     }
 
-    #mensaje {
+    #info {
       position: fixed;
       top: 20px;
-      left: 0;
-      right: 0;
-      text-align: center;
+      left: 20px;
+      right: 20px;
+      z-index: 9999;
+      background: rgba(0,0,0,0.8);
       color: white;
+      padding: 18px;
+      border-radius: 12px;
       font-family: Arial, sans-serif;
-      font-size: 18px;
-      z-index: 10;
-      text-shadow: 0 2px 4px black;
-      pointer-events: none;
-    }
-
-    #sonido {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 20;
-      padding: 12px 22px;
-      border: none;
-      border-radius: 25px;
-      background: white;
-      color: black;
-      font-size: 16px;
-      display: none;
+      font-size: 20px;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="mensaje">Apunta la cámara a la foto 📷</div>
-
-  <button id="sonido">🔊 Activar sonido</button>
+  <div id="info">
+    Apunta a una de las fotos...
+  </div>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
@@ -59,244 +43,38 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
 
-    <a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <video
-        id="videoAmiga"
-        src="./Amiga.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoLupe"
-        src="./Lupe.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoPelon"
-        src="./Pelon.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoPrimo"
-        src="./Primo.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoSayra"
-        src="./Sayra.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoTia"
-        src="./Tia.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoTio2"
-        src="./Tio2.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="videoTio"
-        src="./Tío.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous">
-      </video>
-
-    </a-assets>
-
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
-    </a-camera>
-
-
-    <!-- 0 — Amiga -->
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-video
-        src="#videoAmiga"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 1 — Lupe -->
-    <a-entity mindar-image-target="targetIndex: 1">
-      <a-video
-        src="#videoLupe"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 2 — Pelon -->
-    <a-entity mindar-image-target="targetIndex: 2">
-      <a-video
-        src="#videoPelon"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 3 — Primo -->
-    <a-entity mindar-image-target="targetIndex: 3">
-      <a-video
-        src="#videoPrimo"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 4 — Sayra -->
-    <a-entity mindar-image-target="targetIndex: 4">
-      <a-video
-        src="#videoSayra"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 5 — Tia -->
-    <a-entity mindar-image-target="targetIndex: 5">
-      <a-video
-        src="#videoTia"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 6 — Tio2 -->
-    <a-entity mindar-image-target="targetIndex: 6">
-      <a-video
-        src="#videoTio2"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
-
-
-    <!-- 7 — Tío -->
-    <a-entity mindar-image-target="targetIndex: 7">
-      <a-video
-        src="#videoTio"
-        position="0 0 0"
-        width="1"
-        height="1.5">
-      </a-video>
-    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 0"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 1"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 6"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7"></a-entity>
 
   </a-scene>
 
-
   <script>
+    const info = document.getElementById("info");
 
-    const mensaje = document.querySelector("#mensaje");
-    const botonSonido = document.querySelector("#sonido");
+    document.querySelectorAll("[mindar-image-target]").forEach((target, index) => {
 
-    const objetivos = document.querySelectorAll(
-      "a-entity[mindar-image-target]"
-    );
+      target.addEventListener("targetFound", () => {
 
-    let videoActivo = null;
+        info.innerHTML =
+          "📸 FOTO DETECTADA<br><br>" +
+          "TARGET INDEX: <strong>" + index + "</strong>";
 
-
-    objetivos.forEach((objetivo) => {
-
-      objetivo.addEventListener("targetFound", () => {
-
-        mensaje.textContent = "¡Foto detectada! 🎬";
-
-        const videoElement =
-          objetivo.querySelector("a-video").getAttribute("src");
-
-        videoActivo =
-          document.querySelector(videoElement);
-
-        videoActivo.muted = true;
-
-        videoActivo.play().catch(() => {});
-
-        botonSonido.style.display = "block";
-
+        console.log("TARGET INDEX:", index);
       });
 
-
-      objetivo.addEventListener("targetLost", () => {
-
-        if (videoActivo) {
-          videoActivo.pause();
-        }
-
-        mensaje.textContent =
-          "Apunta la cámara a la foto 📷";
-
-        botonSonido.style.display = "none";
-
-        videoActivo = null;
-
+      target.addEventListener("targetLost", () => {
+        info.innerHTML = "Apunta a otra foto...";
       });
 
     });
-
-
-    botonSonido.addEventListener("click", () => {
-
-      if (videoActivo) {
-
-        videoActivo.muted = false;
-
-        videoActivo.play().catch(() => {});
-
-        botonSonido.textContent =
-          "🔊 Sonido activado";
-
-      }
-
-    });
-
   </script>
 
 </body>
