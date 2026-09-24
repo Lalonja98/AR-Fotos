@@ -11,8 +11,50 @@
     body {
       margin: 0;
       overflow: hidden;
+      font-family: Arial, sans-serif;
     }
 
+    /* PANTALLA DE INICIO */
+    #startScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: linear-gradient(145deg, #111111, #292929);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    #startScreen h1 {
+      font-size: 34px;
+      margin: 0 0 15px;
+    }
+
+    #startScreen p {
+      font-size: 17px;
+      line-height: 1.5;
+      opacity: 0.85;
+      max-width: 320px;
+      margin: 0 0 35px;
+    }
+
+    #startButton {
+      border: none;
+      border-radius: 30px;
+      padding: 16px 38px;
+      font-size: 18px;
+      font-weight: bold;
+      background: white;
+      color: #111;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+    }
+
+    /* BOTÓN DE SONIDO */
     #soundButton {
       position: fixed;
       bottom: 30px;
@@ -34,10 +76,27 @@
 
 <body>
 
-  <button id="soundButton">🔊 Activar sonido</button>
+  <!-- PANTALLA INICIAL -->
+  <div id="startScreen">
+    <h1>✨ Escanea tus recuerdos ✨</h1>
+
+    <p>
+      Apunta tu cámara a una de las fotos
+      y descubre el recuerdo que guarda.
+    </p>
+
+    <button id="startButton">
+      Comenzar
+    </button>
+  </div>
+
+  <!-- BOTÓN DE SONIDO -->
+  <button id="soundButton">
+    🔊 Activar sonido
+  </button>
 
   <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
+    mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
@@ -110,8 +169,7 @@
 
     <!-- 0 = Sayra -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <a-video
-        src="#videoSayra"
+      <a-video src="#videoSayra"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -120,8 +178,7 @@
 
     <!-- 1 = Tío -->
     <a-entity mindar-image-target="targetIndex: 1">
-      <a-video
-        src="#videoTio"
+      <a-video src="#videoTio"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -130,8 +187,7 @@
 
     <!-- 2 = Tio2 -->
     <a-entity mindar-image-target="targetIndex: 2">
-      <a-video
-        src="#videoTio2"
+      <a-video src="#videoTio2"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -140,8 +196,7 @@
 
     <!-- 3 = Tia -->
     <a-entity mindar-image-target="targetIndex: 3">
-      <a-video
-        src="#videoTia"
+      <a-video src="#videoTia"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -150,8 +205,7 @@
 
     <!-- 4 = Amiga -->
     <a-entity mindar-image-target="targetIndex: 4">
-      <a-video
-        src="#videoAmiga"
+      <a-video src="#videoAmiga"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -160,8 +214,7 @@
 
     <!-- 5 = Lupe -->
     <a-entity mindar-image-target="targetIndex: 5">
-      <a-video
-        src="#videoLupe"
+      <a-video src="#videoLupe"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -170,8 +223,7 @@
 
     <!-- 6 = Primo -->
     <a-entity mindar-image-target="targetIndex: 6">
-      <a-video
-        src="#videoPrimo"
+      <a-video src="#videoPrimo"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -180,8 +232,7 @@
 
     <!-- 7 = Pelon -->
     <a-entity mindar-image-target="targetIndex: 7">
-      <a-video
-        src="#videoPelon"
+      <a-video src="#videoPelon"
         width="1"
         height="1.5"
         position="0 0 0">
@@ -191,18 +242,49 @@
   </a-scene>
 
   <script>
+    const startScreen = document.getElementById("startScreen");
+    const startButton = document.getElementById("startButton");
     const soundButton = document.getElementById("soundButton");
+    const scene = document.querySelector("a-scene");
+
     let activeVideo = null;
 
-    const targets = document.querySelectorAll("[mindar-image-target]");
+    /*
+     * INICIAR AR
+     */
+    startButton.addEventListener("click", async () => {
+
+      startScreen.style.display = "none";
+
+      const mindarSystem =
+        scene.systems["mindar-image-system"];
+
+      try {
+        await mindarSystem.start();
+      } catch (error) {
+        console.error(error);
+      }
+
+    });
+
+    /*
+     * DETECCIÓN DE FOTOS
+     */
+    const targets =
+      document.querySelectorAll("[mindar-image-target]");
 
     targets.forEach((target) => {
 
       target.addEventListener("targetFound", () => {
 
-        const videoElement = target.querySelector("a-video");
-        const videoId = videoElement.getAttribute("src");
-        const video = document.querySelector(videoId);
+        const videoElement =
+          target.querySelector("a-video");
+
+        const videoId =
+          videoElement.getAttribute("src");
+
+        const video =
+          document.querySelector(videoId);
 
         activeVideo = video;
 
@@ -226,11 +308,17 @@
 
     });
 
+    /*
+     * ACTIVAR AUDIO
+     */
     soundButton.addEventListener("click", () => {
 
       if (activeVideo) {
+
         activeVideo.muted = false;
+
         activeVideo.play().catch(() => {});
+
         soundButton.style.display = "none";
       }
 
