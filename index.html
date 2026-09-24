@@ -60,14 +60,79 @@
     device-orientation-permission-ui="enabled: false">
 
     <a-assets>
+
       <video
-        id="miVideo"
+        id="videoAmiga"
+        src="./Amiga.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoLupe"
+        src="./Lupe.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoPelon"
+        src="./Pelon.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoPrimo"
+        src="./Primo.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoSayra"
         src="./Sayra.mp4"
         preload="auto"
         loop
         playsinline
         crossorigin="anonymous">
       </video>
+
+      <video
+        id="videoTia"
+        src="./Tia.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoTio2"
+        src="./Tio2.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
+      <video
+        id="videoTio"
+        src="./Tío.mp4"
+        preload="auto"
+        loop
+        playsinline
+        crossorigin="anonymous">
+      </video>
+
     </a-assets>
 
     <a-camera
@@ -75,61 +140,163 @@
       look-controls="enabled: false">
     </a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- Video con proporción vertical 2:3 -->
+    <!-- 0 — Amiga -->
+    <a-entity mindar-image-target="targetIndex: 0">
       <a-video
-        src="#miVideo"
+        src="#videoAmiga"
         position="0 0 0"
-        rotation="0 0 0"
         width="1"
         height="1.5">
       </a-video>
+    </a-entity>
 
+
+    <!-- 1 — Lupe -->
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-video
+        src="#videoLupe"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 2 — Pelon -->
+    <a-entity mindar-image-target="targetIndex: 2">
+      <a-video
+        src="#videoPelon"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 3 — Primo -->
+    <a-entity mindar-image-target="targetIndex: 3">
+      <a-video
+        src="#videoPrimo"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 4 — Sayra -->
+    <a-entity mindar-image-target="targetIndex: 4">
+      <a-video
+        src="#videoSayra"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 5 — Tia -->
+    <a-entity mindar-image-target="targetIndex: 5">
+      <a-video
+        src="#videoTia"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 6 — Tio2 -->
+    <a-entity mindar-image-target="targetIndex: 6">
+      <a-video
+        src="#videoTio2"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
+    </a-entity>
+
+
+    <!-- 7 — Tío -->
+    <a-entity mindar-image-target="targetIndex: 7">
+      <a-video
+        src="#videoTio"
+        position="0 0 0"
+        width="1"
+        height="1.5">
+      </a-video>
     </a-entity>
 
   </a-scene>
 
+
   <script>
-    const video = document.querySelector("#miVideo");
+
     const mensaje = document.querySelector("#mensaje");
     const botonSonido = document.querySelector("#sonido");
 
-    const objetivo = document.querySelector(
+    const objetivos = document.querySelectorAll(
       "a-entity[mindar-image-target]"
     );
 
-    objetivo.addEventListener("targetFound", () => {
+    let videoActivo = null;
 
-      mensaje.textContent = "¡Foto detectada! 🎬";
 
-      // Primero reproduce el video sin sonido
-      // para evitar que el navegador lo bloquee.
-      video.muted = true;
+    objetivos.forEach((objetivo) => {
 
-      video.play().catch(() => {});
+      objetivo.addEventListener("targetFound", () => {
 
-      // Mostramos el botón para activar el audio.
-      botonSonido.style.display = "block";
+        mensaje.textContent = "¡Foto detectada! 🎬";
+
+        const videoElement =
+          objetivo.querySelector("a-video").getAttribute("src");
+
+        videoActivo =
+          document.querySelector(videoElement);
+
+        videoActivo.muted = true;
+
+        videoActivo.play().catch(() => {});
+
+        botonSonido.style.display = "block";
+
+      });
+
+
+      objetivo.addEventListener("targetLost", () => {
+
+        if (videoActivo) {
+          videoActivo.pause();
+        }
+
+        mensaje.textContent =
+          "Apunta la cámara a la foto 📷";
+
+        botonSonido.style.display = "none";
+
+        videoActivo = null;
+
+      });
+
     });
 
-    objetivo.addEventListener("targetLost", () => {
-
-      mensaje.textContent = "Apunta la cámara a la foto 📷";
-
-      video.pause();
-
-      botonSonido.style.display = "none";
-    });
 
     botonSonido.addEventListener("click", () => {
 
-      video.muted = false;
+      if (videoActivo) {
 
-      video.play().catch(() => {});
+        videoActivo.muted = false;
 
-      botonSonido.textContent = "🔊 Sonido activado";
+        videoActivo.play().catch(() => {});
+
+        botonSonido.textContent =
+          "🔊 Sonido activado";
+
+      }
+
     });
+
   </script>
 
 </body>
