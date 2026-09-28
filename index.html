@@ -1,521 +1,412 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Escanea tus recuerdos ✨</title>
-
-  <!-- A-FRAME -->
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
-  <!-- MINDAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-  <style>
-    html, body {
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Escanea tus recuerdos ✨</title>  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>  <style>
+    body {
       margin: 0;
-      width: 100%;
-      height: 100%;
       overflow: hidden;
-      background: #000;
       font-family: Arial, sans-serif;
     }
 
-    #intro {
+    /* PANTALLA DE INICIO */
+    #startScreen {
       position: fixed;
       inset: 0;
-      z-index: 9999;
-
+      z-index: 10000;
+      background: linear-gradient(145deg, #111111, #292929);
+      color: white;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
       text-align: center;
       padding: 30px;
       box-sizing: border-box;
-
-      color: white;
-
-      background:
-        radial-gradient(
-          circle at top,
-          #252525 0%,
-          #0d0d0d 55%,
-          #000 100%
-        );
     }
 
-    #intro h1 {
-      font-size: 30px;
-      margin: 0 0 18px;
+    #startScreen h1 {
+      font-size: 34px;
+      margin: 0 0 15px;
     }
 
-    #intro p {
-      max-width: 330px;
-      font-size: 16px;
+    #startScreen p {
+      font-size: 17px;
       line-height: 1.5;
       opacity: 0.85;
-      margin: 0 0 30px;
+      max-width: 320px;
+      margin: 0 0 35px;
     }
 
     #startButton {
       border: none;
       border-radius: 30px;
-
-      padding: 15px 32px;
-
-      font-size: 17px;
+      padding: 16px 38px;
+      font-size: 18px;
       font-weight: bold;
-
-      color: #111;
       background: white;
+      color: #111;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.35);
     }
 
+    /* BOTÓN DE SONIDO */
     #soundButton {
       position: fixed;
-      z-index: 10000;
-
-      bottom: 25px;
+      bottom: 30px;
       left: 50%;
-
       transform: translateX(-50%);
-
-      display: none;
-
+      z-index: 9999;
+      padding: 14px 24px;
       border: none;
-      border-radius: 25px;
-
-      padding: 12px 20px;
-
-      font-size: 15px;
-
-      background: rgba(255,255,255,0.95);
-      color: #111;
-    }
-
-    #errorBox {
-      position: fixed;
-      z-index: 20000;
-
-      left: 15px;
-      right: 15px;
-      bottom: 20px;
-
+      border-radius: 30px;
+      background: white;
+      color: black;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
       display: none;
-
-      padding: 15px;
-
-      border-radius: 12px;
-
-      background: rgba(120,0,0,0.95);
-      color: white;
-
-      font-size: 14px;
-      line-height: 1.4;
-
-      word-break: break-word;
     }
-  </style>
-</head>
+  </style></head><body>  <!-- ========================= -->  <!--      PANTALLA INICIAL     -->  <!-- ========================= -->  <div id="startScreen"><h1>✨ Escanea tus recuerdos ✨</h1>
 
-<body>
+<p>
+  Apunta tu cámara a una de las fotos
+  y descubre el recuerdo que guarda.
+</p>
 
-  <!-- ========================= -->
-  <!--      PANTALLA INICIAL     -->
-  <!-- ========================= -->
+<button id="startButton">
+  Comenzar
+</button>
 
-  <div id="intro">
-
-    <h1>✨ Escanea tus recuerdos ✨</h1>
-
-    <p>
-      Apunta tu cámara a una de las fotos y descubre el recuerdo que guarda.
-    </p>
-
-    <button id="startButton">
-      Comenzar
-    </button>
-
-  </div>
-
-
-  <!-- ========================= -->
-  <!--       BOTÓN DE AUDIO      -->
-  <!-- ========================= -->
-
-  <button id="soundButton">
+  </div>  <!-- ========================= -->  <!--       BOTÓN DE SONIDO      -->  <!-- ========================= -->  <button id="soundButton">
     🔊 Activar sonido
-  </button>
+  </button>  <!-- ========================= -->  <!--           MINDAR          -->  <!-- ========================= --><a-scene
+mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;"
+color-space="sRGB"
+renderer="colorManagement: true, physicallyCorrectLights"
+vr-mode-ui="enabled: false"
+device-orientation-permission-ui="enabled: false">
+
+<a-assets>
+
+  <!-- ORIGINAL 0 -->
+  <video id="videoSayra"
+    src="./Sayra.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 1 -->
+  <video id="videoTio"
+    src="./Tío.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 2 -->
+  <video id="videoTio2"
+    src="./Tio2.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 3 -->
+  <video id="videoTia"
+    src="./Tia.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 4 -->
+  <video id="videoAmiga"
+    src="./Amiga.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 5 -->
+  <video id="videoLupe"
+    src="./Lupe.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 6 -->
+  <video id="videoPrimo"
+    src="./Primo.mp4"
+    preload="auto"
+    loop
+    playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- ORIGINAL 7 -->
+  <video id="videoPelon"
+    src="./Pelon.mp4"
+    preload="auto"
+    loop
+    playsinline
+    crossorigin="anonymous"></video>
 
 
   <!-- ========================= -->
-  <!--         CAJA ERROR        -->
+  <!--       NUEVOS VIDEOS       -->
   <!-- ========================= -->
 
-  <div id="errorBox"></div>
-
-
-  <!-- ========================= -->
-  <!--           MINDAR          -->
-  <!-- ========================= -->
-
-  <a-scene
-    mindar-image="
-      imageTargetSrc: ./targets.mind;
-      autoStart: false;
-      uiScanning: no;
-      uiLoading: no;
-    "
-
-    color-space="sRGB"
-
-    renderer="
-      colorManagement: true,
-      physicallyCorrectLights
-    "
-
-    vr-mode-ui="enabled: false"
-
-    device-orientation-permission-ui="enabled: false"
-  >
-
-    <!-- ========================= -->
-    <!--          VIDEOS            -->
-    <!-- ========================= -->
-
-    <a-assets>
-
-      <video
-        id="Sayra"
-        src="./Sayra.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Primo"
-        src="./Primo.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Amiga"
-        src="./Amiga.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Lupe"
-        src="./Lupe.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Tio2"
-        src="./Tio2.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Tia"
-        src="./Tia.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Pelon"
-        src="./Pelon.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Tio"
-        src="./Tío.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="PrimaH"
-        src="./PrimaH.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
-
-      <video
-        id="Dana"
-        src="./Dana.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
+  <!-- NUEVO 9 -->
+  <video id="videoPrimaH"
+    src="./PrimaH.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- NUEVO 10 -->
+  <video id="videoDana"
+    src="./Dana.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- NUEVO 11 -->
+  <video id="videoPrimaSe"
+    src="./PrimaSe.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- NUEVO 12 -->
+  <video id="videoAbuelo"
+    src="./Abuelo.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
+
+  <!-- NUEVO 13 -->
+  <video id="videoAdrian"
+    src="./Adrian.mp4"
+    preload="auto"
+    loop
+    playsinline
+    webkit-playsinline
+    crossorigin="anonymous"></video>
 
-      <video
-        id="PrimaSe"
-        src="./PrimaSe.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
+</a-assets>
 
-      <video
-        id="Abuelo"
-        src="./Abuelo.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
 
-      <video
-        id="Adrian"
-        src="./Adrian.mp4"
-        preload="auto"
-        playsinline
-        webkit-playsinline
-        crossorigin="anonymous">
-      </video>
+<!-- ========================= -->
+<!--           CÁMARA          -->
+<!-- ========================= -->
 
-    </a-assets>
+<a-camera
+  position="0 0 0"
+  look-controls="enabled: false">
+</a-camera>
 
 
-    <!-- ========================= -->
-    <!--           CÁMARA          -->
-    <!-- ========================= -->
+<!-- ========================= -->
+<!--      TARGETS ORIGINALES   -->
+<!-- ========================= -->
 
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
-    </a-camera>
 
+<!-- 0 = Sayra -->
+<a-entity mindar-image-target="targetIndex: 0">
 
-    <!-- ========================= -->
-    <!--         TARGET 0          -->
-    <!--           SAYRA           -->
-    <!-- ========================= -->
+  <a-video
+    src="#videoSayra"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    <a-entity mindar-image-target="targetIndex: 0">
+</a-entity>
 
-      <a-video
-        src="#Sayra"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
 
-    </a-entity>
+<!-- 1 = Tío -->
+<a-entity mindar-image-target="targetIndex: 1">
 
+  <a-video
+    src="#videoTio"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    <!-- TARGET 1 - PRIMO -->
+</a-entity>
 
-    <a-entity mindar-image-target="targetIndex: 1">
 
-      <a-video
-        src="#Primo"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+<!-- 2 = Tio2 -->
+<a-entity mindar-image-target="targetIndex: 2">
 
-    </a-entity>
+  <a-video
+    src="#videoTio2"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
+</a-entity>
 
-    <!-- TARGET 2 - AMIGA -->
 
-    <a-entity mindar-image-target="targetIndex: 2">
+<!-- 3 = Tia -->
+<a-entity mindar-image-target="targetIndex: 3">
 
-      <a-video
-        src="#Amiga"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+  <a-video
+    src="#videoTia"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    </a-entity>
+</a-entity>
 
 
-    <!-- TARGET 3 - LUPE -->
+<!-- 4 = Amiga -->
+<a-entity mindar-image-target="targetIndex: 4">
 
-    <a-entity mindar-image-target="targetIndex: 3">
+  <a-video
+    src="#videoAmiga"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-      <a-video
-        src="#Lupe"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+</a-entity>
 
-    </a-entity>
 
+<!-- 5 = Lupe -->
+<a-entity mindar-image-target="targetIndex: 5">
 
-    <!-- TARGET 4 - TIO2 -->
+  <a-video
+    src="#videoLupe"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    <a-entity mindar-image-target="targetIndex: 4">
+</a-entity>
 
-      <a-video
-        src="#Tio2"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
 
-    </a-entity>
+<!-- 6 = Primo -->
+<a-entity mindar-image-target="targetIndex: 6">
 
+  <a-video
+    src="#videoPrimo"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    <!-- TARGET 5 - TIA -->
+</a-entity>
 
-    <a-entity mindar-image-target="targetIndex: 5">
 
-      <a-video
-        src="#Tia"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+<!-- 7 = Pelon -->
+<a-entity mindar-image-target="targetIndex: 7">
 
-    </a-entity>
+  <a-video
+    src="#videoPelon"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
+</a-entity>
 
-    <!-- TARGET 6 - PELON -->
 
-    <a-entity mindar-image-target="targetIndex: 6">
+<!-- ========================= -->
+<!--  8 = RESERVADO / MADRE   -->
+<!-- ========================= -->
 
-      <a-video
-        src="#Pelon"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
 
-    </a-entity>
+<!-- ========================= -->
+<!--       TARGETS NUEVOS      -->
+<!-- ========================= -->
 
 
-    <!-- TARGET 7 - TÍO -->
+<!-- 9 = PrimaH -->
+<a-entity mindar-image-target="targetIndex: 9">
 
-    <a-entity mindar-image-target="targetIndex: 7">
+  <a-video
+    src="#videoPrimaH"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-      <a-video
-        src="#Tio"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+</a-entity>
 
-    </a-entity>
 
+<!-- 10 = Dana -->
+<a-entity mindar-image-target="targetIndex: 10">
 
-    <!-- TARGET 8 - MADRE -->
-    <!-- RESERVADO POR AHORA -->
+  <a-video
+    src="#videoDana"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
+</a-entity>
 
-    <!-- TARGET 9 - PRIMAH -->
 
-    <a-entity mindar-image-target="targetIndex: 9">
+<!-- 11 = PrimaSe -->
+<a-entity mindar-image-target="targetIndex: 11">
 
-      <a-video
-        src="#PrimaH"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+  <a-video
+    src="#videoPrimaSe"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    </a-entity>
+</a-entity>
 
 
-    <!-- TARGET 10 - DANA -->
+<!-- 12 = Abuelo -->
+<a-entity mindar-image-target="targetIndex: 12">
 
-    <a-entity mindar-image-target="targetIndex: 10">
+  <a-video
+    src="#videoAbuelo"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-      <a-video
-        src="#Dana"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+</a-entity>
 
-    </a-entity>
 
+<!-- 13 = Adrian -->
+<a-entity mindar-image-target="targetIndex: 13">
 
-    <!-- TARGET 11 - PRIMASE -->
+  <a-video
+    src="#videoAdrian"
+    width="1"
+    height="1.5"
+    position="0 0 0">
+  </a-video>
 
-    <a-entity mindar-image-target="targetIndex: 11">
+</a-entity>
 
-      <a-video
-        src="#PrimaSe"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
+  </a-scene>  <!-- ========================= -->  <!--         JAVASCRIPT        -->  <!-- ========================= -->  <script>
 
-    </a-entity>
-
-
-    <!-- TARGET 12 - ABUELO -->
-
-    <a-entity mindar-image-target="targetIndex: 12">
-
-      <a-video
-        src="#Abuelo"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
-
-    </a-entity>
-
-
-    <!-- TARGET 13 - ADRIAN -->
-
-    <a-entity mindar-image-target="targetIndex: 13">
-
-      <a-video
-        src="#Adrian"
-        width="1"
-        height="1.777"
-        position="0 0 0">
-      </a-video>
-
-    </a-entity>
-
-  </a-scene>
-
-
-  <!-- ========================= -->
-  <!--         JAVASCRIPT        -->
-  <!-- ========================= -->
-
-  <script>
-
-    const intro =
-      document.getElementById("intro");
+    const startScreen =
+      document.getElementById("startScreen");
 
     const startButton =
       document.getElementById("startButton");
@@ -523,163 +414,40 @@
     const soundButton =
       document.getElementById("soundButton");
 
-    const errorBox =
-      document.getElementById("errorBox");
-
-    const sceneEl =
+    const scene =
       document.querySelector("a-scene");
 
     let activeVideo = null;
 
-    /*
-     * REFERENCIA AL SISTEMA MINDAR
-     *
-     * IMPORTANTE:
-     * Esperamos a que A-Frame termine
-     * de cargar antes de obtener el sistema.
-     */
-
-    let mindarSystem = null;
-
-
-    sceneEl.addEventListener(
-      "loaded",
-      function() {
-
-        mindarSystem =
-          sceneEl.systems[
-            "mindar-image-system"
-          ];
-
-        console.log(
-          "MindAR system cargado:",
-          mindarSystem
-        );
-
-      }
-    );
-
 
     /*
-     * MOSTRAR ERRORES DE MINDAR
-     */
-
-    sceneEl.addEventListener(
-      "arError",
-      function(event) {
-
-        console.error(
-          "MINDAR ERROR:",
-          event
-        );
-
-        errorBox.style.display =
-          "block";
-
-        errorBox.innerHTML =
-          "<strong>⚠️ Error de cámara / MindAR</strong><br>" +
-          "No se pudo iniciar la cámara.<br><br>" +
-          "Revisa que Chrome tenga permiso para usar la cámara en esta página.";
-
-        startButton.disabled =
-          false;
-
-        startButton.textContent =
-          "Intentar de nuevo";
-
-      }
-    );
-
-
-    /*
-     * CUANDO MINDAR YA ESTÁ LISTO
-     */
-
-    sceneEl.addEventListener(
-      "arReady",
-      function() {
-
-        console.log(
-          "✅ MindAR inició correctamente"
-        );
-
-        intro.style.display =
-          "none";
-
-        errorBox.style.display =
-          "none";
-
-      }
-    );
-
-
-    /*
-     * BOTÓN COMENZAR
+     * =========================
+     *       INICIAR AR
+     * =========================
      */
 
     startButton.addEventListener(
       "click",
-      async function() {
+      async () => {
+
+        startScreen.style.display =
+          "none";
+
+        const mindarSystem =
+          scene.systems[
+            "mindar-image-system"
+          ];
 
         try {
 
-          console.log(
-            "Iniciando MindAR..."
-          );
-
-          startButton.disabled =
-            true;
-
-          startButton.textContent =
-            "Iniciando cámara...";
-
-
-          /*
-           * Comprobar que MindAR
-           * esté realmente cargado.
-           */
-
-          if (!mindarSystem) {
-
-            throw new Error(
-              "MindAR todavía no está listo. Espera un momento y vuelve a intentar."
-            );
-
-          }
-
-
-          /*
-           * INICIAR MINDAR
-           */
-
           await mindarSystem.start();
 
+        } catch (error) {
 
-          console.log(
-            "MindAR.start() ejecutado"
-          );
+          console.error(error);
 
-
-        } catch(error) {
-
-          console.error(
-            "ERROR AL INICIAR MINDAR:",
-            error
-          );
-
-
-          errorBox.style.display =
-            "block";
-
-
-          errorBox.innerHTML =
-            "<strong>⚠️ No se pudo iniciar</strong><br>" +
-            error.message;
-
-
-          startButton.disabled =
-            false;
-
+          startScreen.style.display =
+            "flex";
 
           startButton.textContent =
             "Intentar de nuevo";
@@ -691,234 +459,119 @@
 
 
     /*
-     * CONFIGURAR TARGETS
+     * =========================
+     *      DETECCIÓN FOTOS
+     * =========================
      */
 
-    function setupTarget(
-      targetIndex,
-      videoId
-    ) {
-
-      const target =
-        document.querySelector(
-          '[mindar-image-target="targetIndex: ' +
-          targetIndex +
-          '"]'
-        );
-
-
-      const video =
-        document.getElementById(
-          videoId
-        );
-
-
-      if (!target || !video) {
-
-        console.warn(
-          "Target/video no encontrado:",
-          targetIndex,
-          videoId
-        );
-
-        return;
-
-      }
-
-
-      /*
-       * FOTO ENCONTRADA
-       */
-
-      target.addEventListener(
-        "targetFound",
-        function() {
-
-          console.log(
-            "TARGET ENCONTRADO:",
-            targetIndex,
-            videoId
-          );
-
-
-          activeVideo =
-            video;
-
-
-          video.currentTime =
-            0;
-
-
-          /*
-           * Comienza sin sonido
-           * para permitir autoplay.
-           */
-
-          video.muted =
-            true;
-
-
-          video.play().catch(
-            function(error) {
-
-              console.log(
-                "Autoplay bloqueado:",
-                error
-              );
-
-            }
-          );
-
-
-          soundButton.style.display =
-            "block";
-
-        }
+    const targets =
+      document.querySelectorAll(
+        "[mindar-image-target]"
       );
 
 
-      /*
-       * FOTO PERDIDA
-       */
+    targets.forEach(
+      (target) => {
 
-      target.addEventListener(
-        "targetLost",
-        function() {
+        target.addEventListener(
+          "targetFound",
+          () => {
 
-          console.log(
-            "TARGET PERDIDO:",
-            targetIndex
-          );
-
-
-          video.pause();
+            const videoElement =
+              target.querySelector(
+                "a-video"
+              );
 
 
-          if (activeVideo === video) {
+            const videoId =
+              videoElement.getAttribute(
+                "src"
+              );
+
+
+            const video =
+              document.querySelector(
+                videoId
+              );
+
+
+            activeVideo =
+              video;
+
+
+            video.muted =
+              true;
+
+
+            video.currentTime =
+              0;
+
+
+            video.play().catch(
+              () => {}
+            );
+
+
+            soundButton.style.display =
+              "block";
+
+          }
+        );
+
+
+        target.addEventListener(
+          "targetLost",
+          () => {
+
+            if (activeVideo) {
+
+              activeVideo.pause();
+
+            }
+
 
             activeVideo =
               null;
+
 
             soundButton.style.display =
               "none";
 
           }
+        );
 
-        }
-      );
-
-    }
-
-
-    /*
-     * LOS 13 TARGETS ACTIVOS
-     */
-
-    setupTarget(
-      0,
-      "Sayra"
-    );
-
-    setupTarget(
-      1,
-      "Primo"
-    );
-
-    setupTarget(
-      2,
-      "Amiga"
-    );
-
-    setupTarget(
-      3,
-      "Lupe"
-    );
-
-    setupTarget(
-      4,
-      "Tio2"
-    );
-
-    setupTarget(
-      5,
-      "Tia"
-    );
-
-    setupTarget(
-      6,
-      "Pelon"
-    );
-
-    setupTarget(
-      7,
-      "Tio"
-    );
-
-    setupTarget(
-      9,
-      "PrimaH"
-    );
-
-    setupTarget(
-      10,
-      "Dana"
-    );
-
-    setupTarget(
-      11,
-      "PrimaSe"
-    );
-
-    setupTarget(
-      12,
-      "Abuelo"
-    );
-
-    setupTarget(
-      13,
-      "Adrian"
+      }
     );
 
 
     /*
-     * ACTIVAR AUDIO
+     * =========================
+     *      ACTIVAR AUDIO
+     * =========================
      */
 
     soundButton.addEventListener(
       "click",
-      async function() {
+      () => {
 
-        if (!activeVideo) {
-          return;
-        }
+        if (activeVideo) {
 
-
-        activeVideo.muted =
-          false;
+          activeVideo.muted =
+            false;
 
 
-        try {
-
-          await activeVideo.play();
+          activeVideo.play().catch(
+            () => {}
+          );
 
 
           soundButton.style.display =
             "none";
-
-
-        } catch(error) {
-
-          console.error(
-            "Error activando audio:",
-            error
-          );
 
         }
 
       }
     );
 
-  </script>
-
-</body>
+  </script></body>
 </html>
