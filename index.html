@@ -11,316 +11,77 @@
     body {
       margin: 0;
       overflow: hidden;
-      font-family: Arial, sans-serif;
     }
 
-    /* PANTALLA DE INICIO */
-    #startScreen {
+    #info {
       position: fixed;
-      inset: 0;
-      z-index: 10000;
-      background: linear-gradient(145deg, #111111, #292929);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 30px;
-      box-sizing: border-box;
-    }
-
-    #startScreen h1 {
-      font-size: 34px;
-      margin: 0 0 15px;
-    }
-
-    #startScreen p {
-      font-size: 17px;
-      line-height: 1.5;
-      opacity: 0.85;
-      max-width: 320px;
-      margin: 0 0 35px;
-    }
-
-    #startButton {
-      border: none;
-      border-radius: 30px;
-      padding: 16px 38px;
-      font-size: 18px;
-      font-weight: bold;
-      background: white;
-      color: #111;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.35);
-    }
-
-    /* BOTÓN DE SONIDO */
-    #soundButton {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 20px;
+      left: 20px;
+      right: 20px;
       z-index: 9999;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 30px;
-      background: white;
-      color: black;
-      font-size: 18px;
-      font-weight: bold;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      display: none;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 18px;
+      border-radius: 12px;
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- PANTALLA INICIAL -->
-  <div id="startScreen">
-    <h1>✨ Escanea tus recuerdos ✨</h1>
-
-    <p>
-      Apunta tu cámara a una de las fotos
-      y descubre el recuerdo que guarda.
-    </p>
-
-    <button id="startButton">
-      Comenzar
-    </button>
+  <div id="info">
+    📸 Apunta a una de las fotos...
   </div>
 
-  <!-- BOTÓN DE SONIDO -->
-  <button id="soundButton">
-    🔊 Activar sonido
-  </button>
-
   <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: false;"
+    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;"
     color-space="sRGB"
     renderer="colorManagement: true, physicallyCorrectLights"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
-
-    <a-assets>
-
-      <video id="videoSayra"
-        src="./Sayra.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoTio"
-        src="./Tío.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoTio2"
-        src="./Tio2.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoTia"
-        src="./Tia.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoAmiga"
-        src="./Amiga.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoLupe"
-        src="./Lupe.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoPrimo"
-        src="./Primo.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-      <video id="videoPelon"
-        src="./Pelon.mp4"
-        preload="auto"
-        loop
-        playsinline
-        crossorigin="anonymous"></video>
-
-    </a-assets>
 
     <a-camera
       position="0 0 0"
       look-controls="enabled: false">
     </a-camera>
 
-    <!-- 0 = Sayra -->
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-video src="#videoSayra"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 1 = Tío -->
-    <a-entity mindar-image-target="targetIndex: 1">
-      <a-video src="#videoTio"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 2 = Tio2 -->
-    <a-entity mindar-image-target="targetIndex: 2">
-      <a-video src="#videoTio2"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 3 = Tia -->
-    <a-entity mindar-image-target="targetIndex: 3">
-      <a-video src="#videoTia"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 4 = Amiga -->
-    <a-entity mindar-image-target="targetIndex: 4">
-      <a-video src="#videoAmiga"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 5 = Lupe -->
-    <a-entity mindar-image-target="targetIndex: 5">
-      <a-video src="#videoLupe"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 6 = Primo -->
-    <a-entity mindar-image-target="targetIndex: 6">
-      <a-video src="#videoPrimo"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
-
-    <!-- 7 = Pelon -->
-    <a-entity mindar-image-target="targetIndex: 7">
-      <a-video src="#videoPelon"
-        width="1"
-        height="1.5"
-        position="0 0 0">
-      </a-video>
-    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 0"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 1"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 2"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 3"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 6"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 7"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 8"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 9"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 10"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 11"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 12"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 13"></a-entity>
 
   </a-scene>
 
   <script>
-    const startScreen = document.getElementById("startScreen");
-    const startButton = document.getElementById("startButton");
-    const soundButton = document.getElementById("soundButton");
-    const scene = document.querySelector("a-scene");
+    const info = document.getElementById("info");
 
-    let activeVideo = null;
-
-    /*
-     * INICIAR AR
-     */
-    startButton.addEventListener("click", async () => {
-
-      startScreen.style.display = "none";
-
-      const mindarSystem =
-        scene.systems["mindar-image-system"];
-
-      try {
-        await mindarSystem.start();
-      } catch (error) {
-        console.error(error);
-      }
-
-    });
-
-    /*
-     * DETECCIÓN DE FOTOS
-     */
-    const targets =
-      document.querySelectorAll("[mindar-image-target]");
-
-    targets.forEach((target) => {
+    document.querySelectorAll("[mindar-image-target]").forEach((target, index) => {
 
       target.addEventListener("targetFound", () => {
 
-        const videoElement =
-          target.querySelector("a-video");
+        info.innerHTML =
+          "📸 FOTO DETECTADA<br><br>" +
+          "TARGET INDEX: <strong>" + index + "</strong>";
 
-        const videoId =
-          videoElement.getAttribute("src");
-
-        const video =
-          document.querySelector(videoId);
-
-        activeVideo = video;
-
-        video.muted = true;
-        video.currentTime = 0;
-
-        video.play().catch(() => {});
-
-        soundButton.style.display = "block";
+        console.log("TARGET INDEX:", index);
       });
 
       target.addEventListener("targetLost", () => {
-
-        if (activeVideo) {
-          activeVideo.pause();
-        }
-
-        activeVideo = null;
-        soundButton.style.display = "none";
+        info.innerHTML = "📸 Apunta a otra foto...";
       });
-
-    });
-
-    /*
-     * ACTIVAR AUDIO
-     */
-    soundButton.addEventListener("click", () => {
-
-      if (activeVideo) {
-
-        activeVideo.muted = false;
-
-        activeVideo.play().catch(() => {});
-
-        soundButton.style.display = "none";
-      }
 
     });
   </script>
