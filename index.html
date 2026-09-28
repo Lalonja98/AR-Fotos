@@ -6,7 +6,10 @@
 
   <title>Escanea tus recuerdos ✨</title>
 
+  <!-- A-FRAME -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <!-- MINDAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
@@ -119,7 +122,9 @@
 
 <body>
 
-  <!-- PANTALLA DE INICIO -->
+  <!-- ========================= -->
+  <!--      PANTALLA INICIAL     -->
+  <!-- ========================= -->
 
   <div id="intro">
 
@@ -136,20 +141,24 @@
   </div>
 
 
-  <!-- BOTÓN DE AUDIO -->
+  <!-- ========================= -->
+  <!--       BOTÓN DE AUDIO      -->
+  <!-- ========================= -->
 
   <button id="soundButton">
     🔊 Activar sonido
   </button>
 
 
-  <!-- CAJA DE ERROR -->
+  <!-- ========================= -->
+  <!--         CAJA ERROR        -->
+  <!-- ========================= -->
 
   <div id="errorBox"></div>
 
 
   <!-- ========================= -->
-  <!--         MINDAR             -->
+  <!--           MINDAR          -->
   <!-- ========================= -->
 
   <a-scene
@@ -157,6 +166,7 @@
       imageTargetSrc: ./targets.mind;
       autoStart: false;
       uiScanning: no;
+      uiLoading: no;
     "
 
     color-space="sRGB"
@@ -171,9 +181,8 @@
     device-orientation-permission-ui="enabled: false"
   >
 
-
     <!-- ========================= -->
-    <!--          VIDEOS             -->
+    <!--          VIDEOS            -->
     <!-- ========================= -->
 
     <a-assets>
@@ -299,7 +308,7 @@
 
 
     <!-- ========================= -->
-    <!--          CÁMARA            -->
+    <!--           CÁMARA          -->
     <!-- ========================= -->
 
     <a-camera
@@ -309,8 +318,8 @@
 
 
     <!-- ========================= -->
-    <!--        TARGET 0             -->
-    <!--          SAYRA              -->
+    <!--         TARGET 0          -->
+    <!--           SAYRA           -->
     <!-- ========================= -->
 
     <a-entity mindar-image-target="targetIndex: 0">
@@ -500,7 +509,7 @@
 
 
   <!-- ========================= -->
-  <!--          JAVASCRIPT         -->
+  <!--         JAVASCRIPT        -->
   <!-- ========================= -->
 
   <script>
@@ -522,45 +531,86 @@
 
     let activeVideo = null;
 
+    /*
+     * REFERENCIA AL SISTEMA MINDAR
+     *
+     * IMPORTANTE:
+     * Esperamos a que A-Frame termine
+     * de cargar antes de obtener el sistema.
+     */
+
+    let mindarSystem = null;
+
+
+    sceneEl.addEventListener(
+      "loaded",
+      function() {
+
+        mindarSystem =
+          sceneEl.systems[
+            "mindar-image-system"
+          ];
+
+        console.log(
+          "MindAR system cargado:",
+          mindarSystem
+        );
+
+      }
+    );
+
 
     /*
      * MOSTRAR ERRORES DE MINDAR
      */
 
-    sceneEl.addEventListener("arError", function(event) {
+    sceneEl.addEventListener(
+      "arError",
+      function(event) {
 
-      console.error("MINDAR ERROR:", event);
+        console.error(
+          "MINDAR ERROR:",
+          event
+        );
 
-      errorBox.style.display = "block";
+        errorBox.style.display =
+          "block";
 
-      errorBox.innerHTML =
-        "<strong>⚠️ Error de cámara / MindAR</strong><br>" +
-        "No se pudo iniciar la cámara.<br><br>" +
-        "Revisa que Chrome tenga permiso para usar la cámara en esta página.";
+        errorBox.innerHTML =
+          "<strong>⚠️ Error de cámara / MindAR</strong><br>" +
+          "No se pudo iniciar la cámara.<br><br>" +
+          "Revisa que Chrome tenga permiso para usar la cámara en esta página.";
 
-      startButton.disabled = false;
+        startButton.disabled =
+          false;
 
-      startButton.textContent =
-        "Intentar de nuevo";
+        startButton.textContent =
+          "Intentar de nuevo";
 
-    });
+      }
+    );
 
 
     /*
      * CUANDO MINDAR YA ESTÁ LISTO
      */
 
-    sceneEl.addEventListener("arReady", function() {
+    sceneEl.addEventListener(
+      "arReady",
+      function() {
 
-      console.log(
-        "✅ MindAR inició correctamente"
-      );
+        console.log(
+          "✅ MindAR inició correctamente"
+        );
 
-      intro.style.display = "none";
+        intro.style.display =
+          "none";
 
-      errorBox.style.display = "none";
+        errorBox.style.display =
+          "none";
 
-    });
+      }
+    );
 
 
     /*
@@ -577,26 +627,30 @@
             "Iniciando MindAR..."
           );
 
-          startButton.disabled = true;
+          startButton.disabled =
+            true;
 
           startButton.textContent =
             "Iniciando cámara...";
 
 
-          const mindarSystem =
-            sceneEl.systems[
-              "mindar-image-system"
-            ];
-
+          /*
+           * Comprobar que MindAR
+           * esté realmente cargado.
+           */
 
           if (!mindarSystem) {
 
             throw new Error(
-              "No se encontró mindar-image-system"
+              "MindAR todavía no está listo. Espera un momento y vuelve a intentar."
             );
 
           }
 
+
+          /*
+           * INICIAR MINDAR
+           */
 
           await mindarSystem.start();
 
@@ -695,6 +749,11 @@
             0;
 
 
+          /*
+           * Comienza sin sonido
+           * para permitir autoplay.
+           */
+
           video.muted =
             true;
 
@@ -755,31 +814,70 @@
      * LOS 13 TARGETS ACTIVOS
      */
 
-    setupTarget(0, "Sayra");
+    setupTarget(
+      0,
+      "Sayra"
+    );
 
-    setupTarget(1, "Primo");
+    setupTarget(
+      1,
+      "Primo"
+    );
 
-    setupTarget(2, "Amiga");
+    setupTarget(
+      2,
+      "Amiga"
+    );
 
-    setupTarget(3, "Lupe");
+    setupTarget(
+      3,
+      "Lupe"
+    );
 
-    setupTarget(4, "Tio2");
+    setupTarget(
+      4,
+      "Tio2"
+    );
 
-    setupTarget(5, "Tia");
+    setupTarget(
+      5,
+      "Tia"
+    );
 
-    setupTarget(6, "Pelon");
+    setupTarget(
+      6,
+      "Pelon"
+    );
 
-    setupTarget(7, "Tio");
+    setupTarget(
+      7,
+      "Tio"
+    );
 
-    setupTarget(9, "PrimaH");
+    setupTarget(
+      9,
+      "PrimaH"
+    );
 
-    setupTarget(10, "Dana");
+    setupTarget(
+      10,
+      "Dana"
+    );
 
-    setupTarget(11, "PrimaSe");
+    setupTarget(
+      11,
+      "PrimaSe"
+    );
 
-    setupTarget(12, "Abuelo");
+    setupTarget(
+      12,
+      "Abuelo"
+    );
 
-    setupTarget(13, "Adrian");
+    setupTarget(
+      13,
+      "Adrian"
+    );
 
 
     /*
@@ -790,8 +888,9 @@
       "click",
       async function() {
 
-        if (!activeVideo)
+        if (!activeVideo) {
           return;
+        }
 
 
         activeVideo.muted =
@@ -802,8 +901,10 @@
 
           await activeVideo.play();
 
+
           soundButton.style.display =
             "none";
+
 
         } catch(error) {
 
